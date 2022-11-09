@@ -40,7 +40,7 @@ public class TraceTest implements ApplicationRunner {
     @Override
     @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
-
+        logger.info("pk");
             List<String> traceIdList = arg0.getOptionValues("traceId");
             String traceId = traceIdList.get(0);
             List<String> spanIdList = arg0.getOptionValues("spanId");
@@ -56,8 +56,9 @@ public class TraceTest implements ApplicationRunner {
 //            String traceState = traceStateList.get(0);
 //            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
 //            String traceFlag = traceFlagList.get(0);
-        logger.info(secretkey + accesskey);
-
+        logger.info("secretkey + accesskey");
+            logger.info(secretkey + accesskey);
+        logger.info("s3");
             fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
             SpanContext remoteContext = SpanContext.createFromRemoteParent(
