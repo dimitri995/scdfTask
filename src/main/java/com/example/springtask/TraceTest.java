@@ -1,5 +1,7 @@
 package com.example.springtask;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.example.springtask.Service.FileService;
 import com.example.springtask.configuration.OtelConfig;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.*;
@@ -16,6 +18,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,32 +31,44 @@ public class TraceTest implements ApplicationRunner {
 
     @Autowired
     SdkTracerProvider sdkTracerProvider;
+    @Autowired
+    FileService fileService;
 
     private final Log logger = LogFactory.getLog(TraceTest.class);
 
 
     @Override
     @WithSpan
-    public void run(ApplicationArguments arg0) throws InterruptedException {
+    public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
             List<String> traceIdList = arg0.getOptionValues("traceId");
             String traceId = traceIdList.get(0);
             List<String> spanIdList = arg0.getOptionValues("spanId");
             String spanId = spanIdList.get(0);
-//            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
-//            String traceState = traceStateList.get(0);
-//            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
-//            String traceFlag = traceFlagList.get(0);
+            List<String> accessKeyList = arg0.getOptionValues("accesskey");
+            String accesskey = accessKeyList.get(0);
+            List<String> secretkeyList = arg0.getOptionValues("secretkey");
+            String secretkey = secretkeyList.get(0);
+            List<String> contentLengthList = arg0.getOptionValues("contentLength");
+            Long contentLength = Long.valueOf(contentLengthList.get(0));
+
+            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
+            String traceState = traceStateList.get(0);
+            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
+            String traceFlag = traceFlagList.get(0);
+
+
+            fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
             SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                    traceId,
-                    spanId,
+                    "traceId",
+                    "spanId",
                     TraceFlags.getSampled(),
                     TraceState.getDefault());
 
 ////            Tracer tracer = openTelemetry.getTracer("ok");
 //            Context.root().with(Span.wrap(remoteContext));
             logger.info(remoteContext.isValid());
-            logger.info(traceId+" +"+spanId);
+//            logger.info(traceId+" +"+spanId);
             Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
                     .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
 

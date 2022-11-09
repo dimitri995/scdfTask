@@ -68,6 +68,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.324</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.opentelemetry.instrumentation</groupId>
 			<artifactId>opentelemetry-spring-boot-starter</artifactId>
 			<version>1.19.0-alpha</version>
@@ -75,6 +81,11 @@
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
 			<artifactId>opentelemetry-semconv</artifactId>
+			<version>1.19.0-alpha</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-aws-sdk-1.11</artifactId>
 			<version>1.19.0-alpha</version>
 		</dependency>
 		<dependency>
