@@ -62,15 +62,18 @@ public class TraceTest implements ApplicationRunner {
 //            String traceFlag = traceFlagList.get(0);
         logger.info("secretkey + accesskey");
             logger.info(secretkey + accesskey);
-        logger.info("s3");
+        logger.info("s3+");
+
+        SpanContext remoteContext = SpanContext.createFromRemoteParent(
+                traceId,
+                spanId,
+                TraceFlags.getSampled(),
+                TraceState.getDefault());
+        Context.root().with(Span.wrap(remoteContext));
+
             fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
-            SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                    traceId,
-                    spanId,
-                    TraceFlags.getSampled(),
-                    TraceState.getDefault());
-            Context.root().with(Span.wrap(remoteContext));
+
 ////            Tracer tracer = openTelemetry.getTracer("ok");
 //            Context.root().with(Span.wrap(remoteContext));
             logger.info(remoteContext.isValid());
