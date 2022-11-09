@@ -49,8 +49,8 @@ public class TraceTest implements ApplicationRunner {
             String accesskey = accessKeyList.get(0);
             List<String> secretkeyList = arg0.getOptionValues("secretkey");
             String secretkey = secretkeyList.get(0);
-            List<String> contentLengthList = arg0.getOptionValues("contentLength");
-            Long contentLength = Long.valueOf(contentLengthList.get(0));
+//            List<String> contentLengthList = arg0.getOptionValues("contentLength");
+//            Long contentLength = Long.valueOf(contentLengthList.get(0));
 
 //            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
 //            String traceState = traceStateList.get(0);
@@ -83,7 +83,7 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
         logger.info(Span.current().getSpanContext().getTraceId());
         logger.info(Span.current().getSpanContext().getSpanId());
-        logger.info("Test trace5");
+        logger.info("Test trace6");
         span.end();
         sdkTracerProvider.forceFlush();
     }
