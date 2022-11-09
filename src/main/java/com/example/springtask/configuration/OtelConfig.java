@@ -21,6 +21,24 @@ public class OtelConfig {
 
     @Bean
     public OpenTelemetry openTelemetry() {
+
+//        SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder()
+//                .registerMetricReader(PeriodicMetricReader.builder(OtlpHttpMetricExporter.builder().build()).build())
+//                .setResource(resource)
+//                .build();
+
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+                .setTracerProvider(sdkTracerProvider())
+//                .setMeterProvider(sdkMeterProvider)
+                .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
+                .buildAndRegisterGlobal();
+
+        return openTelemetry;
+    }
+
+    @Bean
+    public SdkTracerProvider sdkTracerProvider() {
+
         Resource resource = Resource.getDefault()
                 .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "taskService")));
 
@@ -30,25 +48,10 @@ public class OtelConfig {
 
         LoggingSpanExporter loggingSpanExporter = new LoggingSpanExporter();
 
-        SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
+        return SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(loggingSpanExporter).build())
                 .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
                 .setResource(resource)
                 .build();
-
-        sdkTracerProvider.forceFlush();
-//        SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder()
-//                .registerMetricReader(PeriodicMetricReader.builder(OtlpHttpMetricExporter.builder().build()).build())
-//                .setResource(resource)
-//                .build();
-
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-                .setTracerProvider(sdkTracerProvider)
-//                .setMeterProvider(sdkMeterProvider)
-                .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-                .buildAndRegisterGlobal();
-
-        return openTelemetry;
     }
-
 }

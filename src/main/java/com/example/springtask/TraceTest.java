@@ -1,5 +1,6 @@
 package com.example.springtask;
 
+import com.example.springtask.configuration.OtelConfig;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.*;
 import io.opentelemetry.context.Context;
@@ -7,6 +8,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class TraceTest implements ApplicationRunner {
 
     @Autowired
     OpenTelemetry openTelemetry;
+
+    @Autowired
+    SdkTracerProvider sdkTracerProvider;
 
     private final Log logger = LogFactory.getLog(TraceTest.class);
 
@@ -42,10 +47,11 @@ public class TraceTest implements ApplicationRunner {
                     TraceState.getDefault());
 
 ////            Tracer tracer = openTelemetry.getTracer("ok");
-        Context.root().with(Span.wrap(remoteContext));
+            Context.root().with(Span.wrap(remoteContext));
 
             Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
                     .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
+
 //            Span span = openTelemetry.getTracer("tttttt").spanBuilder("spanbuilder").startSpan();
 
 
@@ -56,7 +62,8 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
         logger.info(Span.current().getSpanContext().getTraceId());
         logger.info(Span.current().getSpanContext().getSpanId());
-        logger.info("Test trace3");
+        logger.info("Test trace4");
         span.end();
+        sdkTracerProvider.forceFlush();
     }
 }
