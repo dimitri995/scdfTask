@@ -45,9 +45,9 @@ public class TraceTest implements ApplicationRunner {
             String traceId = traceIdList.get(0);
             List<String> spanIdList = arg0.getOptionValues("spanId");
             String spanId = spanIdList.get(0);
-            List<String> accessKeyList = arg0.getOptionValues("accesskey");
+            List<String> accessKeyList = arg0.getOptionValues("accessKey");
             String accesskey = accessKeyList.get(0);
-            List<String> secretkeyList = arg0.getOptionValues("secretkey");
+            List<String> secretkeyList = arg0.getOptionValues("secretKey");
             String secretkey = secretkeyList.get(0);
 //            List<String> contentLengthList = arg0.getOptionValues("contentLength");
 //            Long contentLength = Long.valueOf(contentLengthList.get(0));
