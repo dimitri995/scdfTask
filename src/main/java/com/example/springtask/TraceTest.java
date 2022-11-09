@@ -75,7 +75,6 @@ public class TraceTest implements ApplicationRunner {
 
         Context.root().with(Span.wrap(remoteContext)).makeCurrent();
 
-
         fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
         kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
 
