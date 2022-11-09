@@ -24,7 +24,7 @@ public class OtelConfig {
                 .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "taskService")));
 
         SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
-                .setEndpoint("http://otel-collector:4318/v1/traces") //TODO Replace <URL> to the Collector URL
+                .setEndpoint("http://172.29.0.2:4318/v1/traces") //TODO Replace <URL> to the Collector URL
                 .build();
 
 
