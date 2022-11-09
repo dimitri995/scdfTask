@@ -46,20 +46,18 @@ public class TraceTest implements ApplicationRunner {
 //    @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
         logger.info("pk2");
-//            List<String> traceIdList = arg0.getOptionValues("traceId");
-//            String traceId = traceIdList.get(0);
-//        logger.info("pk2");
-//            List<String> spanIdList = arg0.getOptionValues("spanId");
-//            String spanId = spanIdList.get(0);
-//        logger.info("pk2");
-//            List<String> accessKeyList = arg0.getOptionValues("accessKey");
-//            String accesskey = accessKeyList.get(0);
-//        logger.info("pk2");
-//            List<String> secretkeyList = arg0.getOptionValues("secretKey");
-//            String secretkey = secretkeyList.get(0);
-//        logger.info("pk2");
-//            List<String> contentLengthList = arg0.getOptionValues("contentLength");
-//            Long contentLength = Long.valueOf(contentLengthList.get(0));
+            List<String> traceIdList = arg0.getOptionValues("traceId");
+            String traceId = traceIdList.get(0);
+        logger.info("pk2");
+            List<String> spanIdList = arg0.getOptionValues("spanId");
+            String spanId = spanIdList.get(0);
+        logger.info("pk2");
+            List<String> accessKeyList = arg0.getOptionValues("accessKey");
+            String accesskey = accessKeyList.get(0);
+        logger.info("pk2");
+            List<String> secretkeyList = arg0.getOptionValues("secretKey");
+            String secretkey = secretkeyList.get(0);
+        logger.info("pk2");
 
 //            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
 //            String traceState = traceStateList.get(0);
@@ -70,16 +68,15 @@ public class TraceTest implements ApplicationRunner {
         logger.info("s3++");
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                "traceId",
-                "spanId",
+                traceId,
+                spanId,
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
         Context.root().with(Span.wrap(remoteContext)).makeCurrent();
 
 
-                fileService.uploadToS3("AKIAUGW7YYF6JOHJH6GC", "TepTc2HVYgS05HgeG3IBbDTO02DNB1uzbII6Yx5q","exchangestorage", "test_file", "application/pdf");
-//        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
+        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
         kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
 
 ////            Tracer tracer = openTelemetry.getTracer("ok");
