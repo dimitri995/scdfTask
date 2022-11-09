@@ -4,6 +4,7 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.resources.Resource;
@@ -24,15 +25,18 @@ public class OtelConfig {
                 .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "taskService")));
 
         SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
-                .setEndpoint("http://172.29.0.6:4318/v1/traces") //TODO Replace <URL> to the Collector URL
+                .setEndpoint("http://otel-collector:4318/v1/traces") //TODO Replace <URL> to the Collector URL
                 .build();
 
+        LoggingSpanExporter loggingSpanExporter = new LoggingSpanExporter();
 
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
+                .addSpanProcessor(BatchSpanProcessor.builder(loggingSpanExporter).build())
                 .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
                 .setResource(resource)
                 .build();
 
+        sdkTracerProvider.forceFlush();
 //        SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder()
 //                .registerMetricReader(PeriodicMetricReader.builder(OtlpHttpMetricExporter.builder().build()).build())
 //                .setResource(resource)

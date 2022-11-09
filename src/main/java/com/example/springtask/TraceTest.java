@@ -5,6 +5,8 @@ import io.opentelemetry.api.trace.*;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class TraceTest implements ApplicationRunner {
 
 
     @Override
+    @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException {
 //            List<String> traceIdList = Collections.singletonList(arg0.getOptionValues("traceId").toString());
 //            String traceId = traceIdList.get(0);
@@ -55,6 +58,5 @@ public class TraceTest implements ApplicationRunner {
         logger.info(Span.current().getSpanContext().getSpanId());
         logger.info("Test trace2");
         span.end();
-
     }
 }
