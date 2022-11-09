@@ -33,8 +33,8 @@ public class TraceTest implements ApplicationRunner {
 //            String traceFlag = traceFlagList.get(0);
 
             SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                    "0f161df96490f243b9e2d38105b0c0e6",
-                    "fc9caa2db2bedec1",
+                    "37289acb7b2d7401240faeab9a00e028",
+                    "e9ad9dd50813726c",
                     TraceFlags.getSampled(),
                     TraceState.getDefault());
 
