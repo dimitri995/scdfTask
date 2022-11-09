@@ -56,7 +56,7 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
         logger.info(Span.current().getSpanContext().getTraceId());
         logger.info(Span.current().getSpanContext().getSpanId());
-        logger.info("Test trace2");
+        logger.info("Test trace3");
         span.end();
     }
 }
