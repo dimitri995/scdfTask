@@ -40,6 +40,7 @@ public class TraceTest implements ApplicationRunner {
     @Override
     @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
+
             List<String> traceIdList = arg0.getOptionValues("traceId");
             String traceId = traceIdList.get(0);
             List<String> spanIdList = arg0.getOptionValues("spanId");
@@ -51,20 +52,20 @@ public class TraceTest implements ApplicationRunner {
             List<String> contentLengthList = arg0.getOptionValues("contentLength");
             Long contentLength = Long.valueOf(contentLengthList.get(0));
 
-            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
-            String traceState = traceStateList.get(0);
-            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
-            String traceFlag = traceFlagList.get(0);
+//            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
+//            String traceState = traceStateList.get(0);
+//            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
+//            String traceFlag = traceFlagList.get(0);
 
 
             fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
             SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                    "traceId",
-                    "spanId",
+                    traceId,
+                    spanId,
                     TraceFlags.getSampled(),
                     TraceState.getDefault());
-
+            Context.root().with(Span.wrap(remoteContext));
 ////            Tracer tracer = openTelemetry.getTracer("ok");
 //            Context.root().with(Span.wrap(remoteContext));
             logger.info(remoteContext.isValid());
