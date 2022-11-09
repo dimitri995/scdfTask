@@ -56,7 +56,7 @@ public class TraceTest implements ApplicationRunner {
 //            String traceState = traceStateList.get(0);
 //            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
 //            String traceFlag = traceFlagList.get(0);
-
+        logger.info(secretkey + accesskey);
 
             fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
