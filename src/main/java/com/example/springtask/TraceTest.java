@@ -50,8 +50,9 @@ public class TraceTest implements ApplicationRunner {
                     TraceState.getDefault());
 
 ////            Tracer tracer = openTelemetry.getTracer("ok");
-            Context.root().with(Span.wrap(remoteContext));
-
+//            Context.root().with(Span.wrap(remoteContext));
+            logger.info(remoteContext.isValid());
+            logger.info(traceId+" +"+spanId);
             Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
                     .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
 
