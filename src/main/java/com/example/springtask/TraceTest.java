@@ -34,9 +34,9 @@ public class TraceTest implements ApplicationRunner {
     @Override
     @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException {
-            List<String> traceIdList = Collections.singletonList(arg0.getOptionValues("traceId").toString());
+            List<String> traceIdList = arg0.getOptionValues("traceId");
             String traceId = traceIdList.get(0);
-            List<String> spanIdList = Collections.singletonList(arg0.getOptionValues("spanId").toString());
+            List<String> spanIdList = arg0.getOptionValues("spanId");
             String spanId = spanIdList.get(0);
 //            List<String> traceStateList = Collections.singletonList(arg0.getOptionValues("traceState").toString());
 //            String traceState = traceStateList.get(0);
@@ -66,7 +66,7 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
         logger.info(Span.current().getSpanContext().getTraceId());
         logger.info(Span.current().getSpanContext().getSpanId());
-        logger.info("Test trace4");
+        logger.info("Test trace5");
         span.end();
         sdkTracerProvider.forceFlush();
     }
