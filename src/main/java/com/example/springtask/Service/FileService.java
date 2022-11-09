@@ -12,8 +12,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.Tag;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.instrumentation.annotations.SpanAttribute;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
+//import io.opentelemetry.instrumentation.annotations.SpanAttribute;
+//import io.opentelemetry.instrumentation.annotations.WithSpan;
+//import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.opentelemetry.instrumentation.awssdk.v1_11.AwsSdkTelemetry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class FileService {
                 .build();
     }
 
+//    @WithSpan(value = "this is the span")
     public void uploadToS3(String accessKey, String secretKey,String bucketName, String filename, String contentType) throws IOException {
         AmazonS3 s3Client= s3Client(accessKey, secretKey);
         if(!s3Client.doesBucketExistV2(bucketName)) {
@@ -81,8 +83,8 @@ public class FileService {
     }
 
 
-    @WithSpan(value = "this is span withspan")
-    public void saveFile(@SpanAttribute String filename) {
+//    @WithSpan(value = "this is span withspan")
+    public void saveFile( String filename) {
 //        Tracer tracer =
 //                openTelemetry.getTracer("instrumentation-library-name", "1.0.0");
         Span span = Span.current();

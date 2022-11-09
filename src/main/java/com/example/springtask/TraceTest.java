@@ -2,12 +2,14 @@ package com.example.springtask;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.example.springtask.Service.FileService;
+import com.example.springtask.Service.KafkaService;
 import com.example.springtask.configuration.OtelConfig;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.*;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
+//import io.opentelemetry.instrumentation.annotations.WithSpan;
+//import io.opentelemetry.instrumentation.annotations.WithSpan;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -33,26 +35,29 @@ public class TraceTest implements ApplicationRunner {
     SdkTracerProvider sdkTracerProvider;
     @Autowired
     FileService fileService;
+    @Autowired
+    KafkaService kafkaService;
+
 
     private final Log logger = LogFactory.getLog(TraceTest.class);
 
 
     @Override
-    @WithSpan
+//    @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
         logger.info("pk2");
-            List<String> traceIdList = arg0.getOptionValues("traceId");
-            String traceId = traceIdList.get(0);
-        logger.info("pk2");
-            List<String> spanIdList = arg0.getOptionValues("spanId");
-            String spanId = spanIdList.get(0);
-        logger.info("pk2");
-            List<String> accessKeyList = arg0.getOptionValues("accessKey");
-            String accesskey = accessKeyList.get(0);
-        logger.info("pk2");
-            List<String> secretkeyList = arg0.getOptionValues("secretKey");
-            String secretkey = secretkeyList.get(0);
-        logger.info("pk2");
+//            List<String> traceIdList = arg0.getOptionValues("traceId");
+//            String traceId = traceIdList.get(0);
+//        logger.info("pk2");
+//            List<String> spanIdList = arg0.getOptionValues("spanId");
+//            String spanId = spanIdList.get(0);
+//        logger.info("pk2");
+//            List<String> accessKeyList = arg0.getOptionValues("accessKey");
+//            String accesskey = accessKeyList.get(0);
+//        logger.info("pk2");
+//            List<String> secretkeyList = arg0.getOptionValues("secretKey");
+//            String secretkey = secretkeyList.get(0);
+//        logger.info("pk2");
 //            List<String> contentLengthList = arg0.getOptionValues("contentLength");
 //            Long contentLength = Long.valueOf(contentLengthList.get(0));
 
@@ -61,19 +66,21 @@ public class TraceTest implements ApplicationRunner {
 //            List<String> traceFlagList = Collections.singletonList(arg0.getOptionValues("traceFlag").toString());
 //            String traceFlag = traceFlagList.get(0);
         logger.info("secretkey + accesskey");
-            logger.info(secretkey + accesskey);
+//            logger.info(secretkey + accesskey);
         logger.info("s3++");
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                traceId,
-                spanId,
+                "traceId",
+                "spanId",
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
         Context.root().with(Span.wrap(remoteContext)).makeCurrent();
 
-            fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 
+                fileService.uploadToS3("AKIAUGW7YYF6JOHJH6GC", "TepTc2HVYgS05HgeG3IBbDTO02DNB1uzbII6Yx5q","exchangestorage", "test_file", "application/pdf");
+//        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
+        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
 
 ////            Tracer tracer = openTelemetry.getTracer("ok");
 //            Context.root().with(Span.wrap(remoteContext));
