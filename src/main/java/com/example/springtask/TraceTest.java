@@ -40,15 +40,19 @@ public class TraceTest implements ApplicationRunner {
     @Override
     @WithSpan
     public void run(ApplicationArguments arg0) throws InterruptedException, IOException {
-        logger.info("pk");
+        logger.info("pk2");
             List<String> traceIdList = arg0.getOptionValues("traceId");
             String traceId = traceIdList.get(0);
+        logger.info("pk2");
             List<String> spanIdList = arg0.getOptionValues("spanId");
             String spanId = spanIdList.get(0);
+        logger.info("pk2");
             List<String> accessKeyList = arg0.getOptionValues("accessKey");
             String accesskey = accessKeyList.get(0);
+        logger.info("pk2");
             List<String> secretkeyList = arg0.getOptionValues("secretKey");
             String secretkey = secretkeyList.get(0);
+        logger.info("pk2");
 //            List<String> contentLengthList = arg0.getOptionValues("contentLength");
 //            Long contentLength = Long.valueOf(contentLengthList.get(0));
 
