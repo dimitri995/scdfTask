@@ -67,7 +67,7 @@ public class TraceTest implements ApplicationRunner {
 //            String traceFlag = traceFlagList.get(0);
         logger.info("secretkey + accesskey");
 //            logger.info(secretkey + accesskey);
-        logger.info("s3++");
+        logger.info("s3+++");
 
 
 
@@ -79,15 +79,14 @@ public class TraceTest implements ApplicationRunner {
 
         Context.root().with(Span.wrap(remoteContext)).makeCurrent();
 
-        Tracer tracer = openTelemetry.getTracer("spring-cloud");
-
         Span span = openTelemetry.getTracer("test").spanBuilder("spanbuilder")
                 .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
         Scope ss = span.makeCurrent();
 
 
         fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
-        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
+//        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
+        kafkaTemplate.send("testTopic","test message with trace");
         kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());
