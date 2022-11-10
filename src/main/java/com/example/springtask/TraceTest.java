@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -38,7 +39,8 @@ public class TraceTest implements ApplicationRunner {
     @Autowired
     KafkaService kafkaService;
 
-
+    @Autowired
+    KafkaTemplate kafkaTemplate;
     private final Log logger = LogFactory.getLog(TraceTest.class);
 
 
@@ -86,7 +88,7 @@ public class TraceTest implements ApplicationRunner {
 
         fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
         kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
-
+        kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());
 //            logger.info(traceId+" +"+spanId);
