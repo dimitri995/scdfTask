@@ -1,6 +1,7 @@
 package com.example.springtask;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.example.model.FileInformations;
 import com.example.springtask.Service.FileService;
 import com.example.springtask.Service.KafkaService;
 import com.example.springtask.configuration.OtelConfig;
@@ -86,6 +87,14 @@ public class TraceTest implements ApplicationRunner {
 
         fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 //        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
+        FileInformations fileInformations = new FileInformations(
+                "tenantid",
+                "appId",
+                "filename",
+                "urlOfFile",
+                traceId+"|"+spanId
+        );
+
         kafkaTemplate.send("testTopic","test message with trace");
         kafkaTemplate.flush();
 

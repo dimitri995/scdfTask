@@ -1,5 +1,6 @@
 package com.example.springtask.configuration;
 
+import com.example.model.FileInformations;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.instrumentation.kafkaclients.KafkaTelemetry;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -30,7 +31,7 @@ public class KafkaProducerConfig {
 
 
     @Bean
-    public DefaultKafkaProducerFactory<String, String> producerFactory() {
+    public DefaultKafkaProducerFactory<String, FileInformations> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -50,7 +51,7 @@ public class KafkaProducerConfig {
 
 
     @Bean(name = "kafkaTemplate")
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, FileInformations> kafkaTemplate() {
         producerInstrumentation().customize(producerFactory());
         return new KafkaTemplate<>(producerFactory());
     }
