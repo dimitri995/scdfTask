@@ -70,8 +70,8 @@ public class TraceTest implements ApplicationRunner {
 
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                "traceId",
-                "spanId",
+                traceId,
+                spanId,
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
@@ -79,7 +79,7 @@ public class TraceTest implements ApplicationRunner {
 
         Tracer tracer = openTelemetry.getTracer("spring-cloud");
 
-        Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
+        Span span = openTelemetry.getTracer("test").spanBuilder("spanbuilder")
                 .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
         Scope ss = span.makeCurrent();
 
