@@ -76,16 +76,7 @@
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>1.12.324</version>
 		</dependency>
-		<dependency>
-			<groupId>io.opentelemetry.instrumentation</groupId>
-			<artifactId>opentelemetry-kafka-clients-2.6</artifactId>
-			<version>1.19.0-alpha</version>
-		</dependency>
-		<dependency>
-			<groupId>io.opentelemetry.instrumentation</groupId>
-			<artifactId>opentelemetry-spring-kafka-2.7</artifactId>
-			<version>1.19.0-alpha</version>
-		</dependency>
+
 
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
@@ -118,7 +109,16 @@
 			<artifactId>opentelemetry-semconv</artifactId>
 			<version>1.19.0-alpha</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-kafka-clients-2.6</artifactId>
+			<version>1.19.0-alpha</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-spring-kafka-2.7</artifactId>
+			<version>1.19.0-alpha</version>
+		</dependency>
 
 		<dependency>
 			<groupId>io.opentelemetry.instrumentation</groupId>

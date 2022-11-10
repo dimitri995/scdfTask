@@ -67,32 +67,35 @@ public class TraceTest implements ApplicationRunner {
 //            logger.info(secretkey + accesskey);
         logger.info("s3++");
 
+
+
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                traceId,
-                spanId,
+                "traceId",
+                "spanId",
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
         Context.root().with(Span.wrap(remoteContext)).makeCurrent();
 
+        Tracer tracer = openTelemetry.getTracer("spring-cloud");
+
+        Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
+                .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
+        Scope ss = span.makeCurrent();
+
+
         fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
         kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
 
-////            Tracer tracer = openTelemetry.getTracer("ok");
-//            Context.root().with(Span.wrap(remoteContext));
+
             logger.info(remoteContext.isValid());
 //            logger.info(traceId+" +"+spanId);
-            Span span = openTelemetry.getTracer("d").spanBuilder("spanbuilder")
-                    .setParent(Context.current().with(Span.wrap(remoteContext))).startSpan();
+
 
 //            Span span = openTelemetry.getTracer("tttttt").spanBuilder("spanbuilder").startSpan();
 
 
-//        Tracer tracer = openTelemetry.getTracer("spring-cloud");
-//
-//        Span span = tracer.spanBuilder("span").startSpan();
-//        Context.current().makeCurrent();
-        Scope ss = span.makeCurrent();
+
         logger.info(Span.current().getSpanContext().getTraceId());
         logger.info(Span.current().getSpanContext().getSpanId());
         logger.info("Test trace6");
