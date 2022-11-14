@@ -2,6 +2,7 @@ package com.example.springtask.configuration;
 
 import com.example.model.FileInformations;
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.kafkaclients.KafkaTelemetry;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -14,7 +15,9 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import javax.naming.Context;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -22,6 +25,7 @@ public class KafkaProducerConfig {
 
     @Autowired
     OpenTelemetry openTelemetry;
+
 
     @Bean(name = "producerInstrumentation")
     public DefaultKafkaProducerFactoryCustomizer producerInstrumentation() {

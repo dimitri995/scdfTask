@@ -8,7 +8,12 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 //import io.opentelemetry.instrumentation.annotations.WithSpan;
 //import io.opentelemetry.instrumentation.annotations.WithSpan;
+import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.instrumentation.api.internal.PropagatorBasedSpanLinksExtractor;
+import io.opentelemetry.instrumentation.api.internal.SpanKey;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +70,8 @@ public class TraceTest implements ApplicationRunner {
 
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                traceId,
-                spanId,
+                "traceId",
+                "spanId",
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
@@ -84,10 +89,12 @@ public class TraceTest implements ApplicationRunner {
                 "appId",
                 "filename",
                 "urlOfFile",
-                traceId+"|"+spanId
+                "traceId"+"|"+"spanId"
         );
+//        kafkaTemplate.send("testTopic",traceId+"|"+spanId + "-"+ Span.current().getSpanContext().getSpanId());
 
-        kafkaTemplate.send("testTopic",traceId+"|"+spanId);
+        kafkaTemplate.send("testTopic",span.getSpanContext().getTraceId()+"|"+span.getSpanContext().getSpanId() + "-"+ Span.current().getSpanContext().getSpanId());
+
         kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());
