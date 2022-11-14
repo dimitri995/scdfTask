@@ -65,8 +65,8 @@ public class TraceTest implements ApplicationRunner {
 
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                "traceId",
-                "spanId",
+                traceId,
+                spanId,
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
@@ -77,7 +77,7 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
 
 
-//        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
+        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 //        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
         FileInformations fileInformations = new FileInformations(
                 "tenantid",
