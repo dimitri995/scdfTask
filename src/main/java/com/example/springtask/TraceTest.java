@@ -1,18 +1,13 @@
 package com.example.springtask;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.example.model.FileInformations;
 import com.example.springtask.Service.FileService;
-import com.example.springtask.Service.KafkaService;
-import com.example.springtask.configuration.OtelConfig;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.*;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 //import io.opentelemetry.instrumentation.annotations.WithSpan;
 //import io.opentelemetry.instrumentation.annotations.WithSpan;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,9 +17,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -37,8 +30,7 @@ public class TraceTest implements ApplicationRunner {
     SdkTracerProvider sdkTracerProvider;
     @Autowired
     FileService fileService;
-    @Autowired
-    KafkaService kafkaService;
+
 
     @Autowired
     KafkaTemplate kafkaTemplate;
@@ -73,8 +65,8 @@ public class TraceTest implements ApplicationRunner {
 
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                traceId,
-                spanId,
+                "traceId",
+                "spanId",
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
@@ -85,7 +77,7 @@ public class TraceTest implements ApplicationRunner {
         Scope ss = span.makeCurrent();
 
 
-        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
+//        fileService.uploadToS3(accesskey, secretkey,"exchangestorage", "test_file", "application/pdf");
 //        kafkaService.sendMessageToTopic("tenantid","fileInformations","testTopic");
         FileInformations fileInformations = new FileInformations(
                 "tenantid",
@@ -95,7 +87,7 @@ public class TraceTest implements ApplicationRunner {
                 traceId+"|"+spanId
         );
 
-        kafkaTemplate.send("testTopic",fileInformations);
+        kafkaTemplate.send("testTopic","fileInformations");
         kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());

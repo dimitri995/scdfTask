@@ -43,8 +43,8 @@ public class OtelConfig {
                 .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "taskService")));
 
         SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
-                .setEndpoint("http://otel-collector:4318/v1/traces") //TODO Replace <URL> to the Collector URL
-//                .setEndpoint("http://localhost:4318/v1/traces") //TODO Replace <URL> to the Collector URL
+//                .setEndpoint("http://otel-collector:4318/v1/traces") //TODO Replace <URL> to the Collector URL
+                .setEndpoint("http://localhost:4318/v1/traces") //TODO Replace <URL> to the Collector URL
                 .build();
 
         LoggingSpanExporter loggingSpanExporter = new LoggingSpanExporter();

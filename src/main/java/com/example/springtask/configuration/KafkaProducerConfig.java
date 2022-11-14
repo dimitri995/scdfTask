@@ -31,27 +31,24 @@ public class KafkaProducerConfig {
 
 
     @Bean
-    public DefaultKafkaProducerFactory<String, FileInformations> producerFactory() {
+    public DefaultKafkaProducerFactory<String, String> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "broker:29092");
-//                "localhost:9092");
+//                "broker:29092");
+                "localhost:9092");
         configProps.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class);
         configProps.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                FileInformations.class);
-        configProps.put(
-                ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG,
-                "120000");
+                StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
 
     @Bean(name = "kafkaTemplate")
-    public KafkaTemplate<String, FileInformations> kafkaTemplate() {
+    public KafkaTemplate<String, String> kafkaTemplate() {
         producerInstrumentation().customize(producerFactory());
         return new KafkaTemplate<>(producerFactory());
     }
