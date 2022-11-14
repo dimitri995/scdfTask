@@ -60,7 +60,7 @@ public class TraceTest implements ApplicationRunner {
 //            String traceFlag = traceFlagList.get(0);
         logger.info("secretkey + accesskey");
 //            logger.info(secretkey + accesskey);
-        logger.info("s3+++");
+        logger.info("s3++++");
 
 
 
@@ -87,7 +87,7 @@ public class TraceTest implements ApplicationRunner {
                 traceId+"|"+spanId
         );
 
-        kafkaTemplate.send("testTopic",fileInformations);
+        kafkaTemplate.send("testTopic",traceId+"|"+spanId);
         kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());
