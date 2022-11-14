@@ -87,7 +87,7 @@ public class TraceTest implements ApplicationRunner {
                 traceId+"|"+spanId
         );
 
-        kafkaTemplate.send("testTopic","fileInformations");
+        kafkaTemplate.send("testTopic",fileInformations);
         kafkaTemplate.flush();
 
             logger.info(remoteContext.isValid());
