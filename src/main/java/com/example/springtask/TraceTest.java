@@ -70,8 +70,8 @@ public class TraceTest implements ApplicationRunner {
 
 
         SpanContext remoteContext = SpanContext.createFromRemoteParent(
-                "traceId",
-                "spanId",
+                traceId,
+                spanId,
                 TraceFlags.getSampled(),
                 TraceState.getDefault());
 
